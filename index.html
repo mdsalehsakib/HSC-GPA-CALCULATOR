@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>HSC GPA Calculator</title>
+  <title>HSC GPA Calculator - Bangladesh</title>
+  <meta name="description" content="Easily calculate your HSC GPA using marks or grades. This GPA calculator is accurate, fast, and mobile-friendly. Made for Bangladeshi students by Saleh Sakib." />
+  <meta name="keywords" content="HSC GPA calculator, BD GPA calculator, HSC result tools, GPA from marks, GPA from grade, GPA BD" />
+  <meta name="author" content="Saleh Sakib" />
   <style>
     :root {
       --blue: #007bff;
@@ -56,11 +59,11 @@
       box-shadow: 0 8px 20px var(--shadow-dark);
     }
 
-    h2 {
+    h1 {
       text-align: center;
       color: inherit;
-      margin-bottom: 0.5rem;
-      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
     }
 
     label {
@@ -240,7 +243,7 @@
 
     /* Responsive tweaks for smaller screens */
     @media (max-width: 480px) {
-      h2 {
+      h1 {
         font-size: 1.4rem;
       }
       label {
@@ -272,8 +275,8 @@
     </label>
   </div>
 
-  <div class="container">
-    <h2>📘 HSC GPA Calculator</h2>
+  <div class="container" role="main">
+    <h1>📘 HSC GPA Calculator for Bangladeshi Students</h1>
     <form id="gpaForm" onsubmit="return false;">
       <label for="bangla">Bangla:</label>
       <div class="subject-row">
@@ -417,7 +420,10 @@
 
       if (optional > 2) total += (optional - 2);
 
-      const gpa = (total / count).toFixed(2);
+      let gpa = total / count;
+      if (gpa > 5.00) gpa = 5.00;
+
+      gpa = gpa.toFixed(2);
 
       let comment = "";
       if (gpa >= 5.00) {
