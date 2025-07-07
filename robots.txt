@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://mdsalehsakib.github.io/HSC-GPA-CALCULATOR/sitemap.xml
