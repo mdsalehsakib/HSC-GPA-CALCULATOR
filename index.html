@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>HSC GPA Calculator</title>
+  <style>
+    :root {
+      --blue: #007bff;
+      --blue-dark: #0056b3;
+      --green: #2e8b57;
+      --red: #dc3545;
+      --bg-light: linear-gradient(120deg, #c2e9fb, #a1c4fd);
+      --bg-dark: #121212;
+      --text-light: #2d3a4b;
+      --text-dark: #ddd;
+      --container-light: white;
+      --container-dark: #1e1e1e;
+      --shadow-light: rgba(0, 0, 0, 0.2);
+      --shadow-dark: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+      color: var(--text-light);
+      transition: background 0.4s ease, color 0.4s ease;
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+
+    body.dark-mode {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    .container {
+      background: var(--container-light);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px var(--shadow-light);
+      max-width: 450px;
+      width: 100%;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+      box-sizing: border-box;
+    }
+
+    body.dark-mode .container {
+      background: var(--container-dark);
+      box-shadow: 0 8px 20px var(--shadow-dark);
+    }
+
+    h2 {
+      text-align: center;
+      color: inherit;
+      margin-bottom: 0.5rem;
+      font-size: 1.6rem;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+      color: inherit;
+      font-size: 1.1rem;
+    }
+
+    .subject-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.4rem;
+    }
+
+    select, input[type=number] {
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      font-size: 1.1rem;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    select {
+      flex: 1 1 60%;
+      background: white;
+      color: black;
+    }
+
+    input[type=number] {
+      flex: 1 1 35%;
+      background: white;
+      color: black;
+      -webkit-appearance: none;
+      -moz-appearance: textfield;
+    }
+
+    body.dark-mode select,
+    body.dark-mode input[type=number] {
+      background: #2b2b2b;
+      color: #eee;
+      border-color: #555;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.9rem;
+      background-color: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    button:hover {
+      background-color: var(--blue-dark);
+    }
+
+    #result {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-top: 1rem;
+      color: var(--green);
+      transition: color 0.3s ease;
+      min-height: 2.5rem;
+    }
+
+    body.dark-mode #result {
+      color: #7fffd4;
+    }
+
+    .footer {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: #444;
+      text-align: center;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+
+    body.dark-mode .footer {
+      color: #aaa;
+    }
+
+    .footer a#author-link {
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 900;
+      font-size: 1.3rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 8px rgba(101, 67, 213, 0.6);
+    }
+
+    .footer a#author-link:hover {
+      color: #2575fc;
+      -webkit-text-fill-color: initial;
+      text-decoration: underline;
+      text-shadow: 0 0 12px #2575fc;
+    }
+
+    /* Dark mode toggle switch container */
+    .dark-mode-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: var(--text-light);
+      user-select: none;
+      z-index: 1000;
+      transition: color 0.4s ease;
+      background: rgba(255 255 255 / 0.7);
+      padding: 0.3rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    body.dark-mode .dark-mode-toggle {
+      color: var(--text-dark);
+      background: rgba(0 0 0 / 0.6);
+    }
+
+    /* Switch style */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 45px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--blue);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(21px);
+    }
+
+    /* Responsive tweaks for smaller screens */
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 1.4rem;
+      }
+      label {
+        font-size: 1rem;
+      }
+      select, input[type=number] {
+        font-size: 1rem;
+        padding: 0.4rem;
+      }
+      button {
+        font-size: 1.1rem;
+        padding: 0.8rem;
+      }
+      .dark-mode-toggle {
+        font-size: 0.9rem;
+        padding: 0.25rem 0.5rem;
+        top: 0.5rem;
+        right: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dark-mode-toggle" aria-label="Toggle dark mode">
+    <label for="toggle-dark-mode">Dark Mode</label>
+    <label class="switch" aria-hidden="true">
+      <input type="checkbox" id="toggle-dark-mode" />
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="container">
+    <h2>📘 HSC GPA Calculator</h2>
+    <form id="gpaForm" onsubmit="return false;">
+      <label for="bangla">Bangla:</label>
+      <div class="subject-row">
+        <select id="bangla" aria-describedby="bangla_marks">
+          <option value="">Select Grade</option>
+        </select>
+        <input type="number" id="bangla_marks" min="0" max="100" placeholder="Marks (0-100)" />
+      </div>
+
+      <label for="english">English:</label>
+      <div class="subject-row">
+        <select id="english" aria-describedby="english_marks">
+          <option value="">Select Grade</option>
+        </select>
+        <input type="number" id="english_marks" min="0" max="100" placeholder="Marks (0-100)" />
+      </div>
+
+      <label for="ict">ICT:</label>
+      <div class="subject-row">
+        <select id="ict" aria-describedby="ict_marks">
+          <option value="">Select Grade</option>
+        </select>
+        <input type="number" id="ict_marks" min="0" max="100" placeholder="Marks (0-100)" />
+      </div>
+
+      <label for="physics">Physics:</label>
+      <div class="subject-row">
+        <select id="physics" aria-describedby="physics_marks">
+          <option value="">Select Grade</option>
+        </select>
+        <input type="number" id="physics_marks" min="0" max="100" placeholder="Marks (0-100)" />
+      </div>
+
+      <label for="chemistry">Chemistry:</label>
+      <div class="subject-row">
+        <select id="chemistry" aria-describedby="chemistry_marks">
+          <option value="">Select Grade</option>
+        </select>
+        <input type="number" id="chemistry_marks" min="0" max="100" placeholder="Marks (0-100)" />
+      </div>
+
+      <label for="biology">Biology / Math:</label>
+      <div class="subject-row">
+        <select id="biology" aria-describedby="biology_marks">
+          <option value="">Select Grade</option>
+        </select>
+        <input type="number" id="biology_marks" min="0" max="100" placeholder="Marks (0-100)" />
+      </div>
+
+      <label for="optional">Optional Subject (Optional):</label>
+      <div class="subject-row">
+        <select id="optional" aria-describedby="optional_marks">
+          <option value="">Select Grade</option>
+        </select>
+        <input type="number" id="optional_marks" min="0" max="100" placeholder="Marks (0-100)" />
+      </div>
+
+      <button type="button" onclick="calculateGPA()">🎓 Calculate GPA</button>
+    </form>
+    <div id="result" role="alert" aria-live="polite"></div>
+  </div>
+  <div class="footer">
+    Made by <a href="https://linktr.ee/salehsakib" target="_blank" rel="noopener noreferrer" id="author-link">Saleh Sakib</a>
+  </div>
+
+  <script>
+    const subjects = ["bangla", "english", "ict", "physics", "chemistry", "biology", "optional"];
+    const grades = [
+      { label: "A+ (5.00)", value: 5 },
+      { label: "A (4.00)", value: 4 },
+      { label: "A- (3.50)", value: 3.5 },
+      { label: "B (3.00)", value: 3 },
+      { label: "C (2.00)", value: 2 },
+      { label: "D (1.00)", value: 1 },
+      { label: "F (0.00)", value: 0 },
+    ];
+
+    function marksToGPA(mark) {
+      if (mark >= 80 && mark <= 100) return 5;
+      if (mark >= 70 && mark <= 79) return 4;
+      if (mark >= 60 && mark <= 69) return 3.5;
+      if (mark >= 50 && mark <= 59) return 3;
+      if (mark >= 40 && mark <= 49) return 2;
+      if (mark >= 33 && mark <= 39) return 1;
+      if (mark >= 0 && mark <= 32) return 0;
+      return NaN;
+    }
+
+    subjects.forEach(subject => {
+      const select = document.getElementById(subject);
+      grades.forEach(grade => {
+        const option = document.createElement("option");
+        option.value = grade.value;
+        option.textContent = grade.label;
+        select.appendChild(option);
+      });
+    });
+
+    subjects.forEach(subject => {
+      const marksInput = document.getElementById(subject + "_marks");
+      const gradeSelect = document.getElementById(subject);
+
+      marksInput.addEventListener("input", () => {
+        let mark = parseFloat(marksInput.value);
+        if (isNaN(mark) || mark < 0 || mark > 100) {
+          gradeSelect.value = "";
+          return;
+        }
+        const gpa = marksToGPA(mark);
+        gradeSelect.value = gpa;
+      });
+
+      gradeSelect.addEventListener("change", () => {
+        marksInput.value = "";
+      });
+    });
+
+    function calculateGPA() {
+      let total = 0;
+      let count = 0;
+      let fail = false;
+      let optional = 0;
+
+      for (let id of subjects) {
+        const gradeValue = parseFloat(document.getElementById(id).value);
+        if (isNaN(gradeValue)) continue;
+        if (id !== "optional" && gradeValue === 0) fail = true;
+        if (id === "optional") optional = gradeValue;
+        else {
+          total += gradeValue;
+          count++;
+        }
+      }
+
+      const resultBox = document.getElementById("result");
+      if (fail) {
+        resultBox.textContent = "❌ GPA: 0.00 (You have failed in one or more subjects 😢)";
+        resultBox.style.color = "var(--red)";
+        return;
+      }
+
+      if (optional > 2) total += (optional - 2);
+
+      const gpa = (total / count).toFixed(2);
+
+      let comment = "";
+      if (gpa >= 5.00) {
+        comment = "Absolute Legend 👑";
+      } else if (gpa >= 4.50) {
+        comment = "Great Job 💥";
+      } else if (gpa >= 4.00) {
+        comment = "Well Done 🛸";
+      } else if (gpa >= 3.50) {
+        comment = "Keep Going 🚀";
+      } else if (gpa >= 3.00) {
+        comment = "Try Harder 💪";
+      } else {
+        comment = "Don't Worry ✨";
+      }
+
+      resultBox.innerHTML = `✅ GPA: ${gpa}<br><em>${comment}</em>`;
+      resultBox.style.color = "var(--green)";
+    }
+
+    // Dark mode toggle
+    const toggle = document.getElementById('toggle-dark-mode');
+    toggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark-mode', toggle.checked);
+    });
+  </script>
+</body>
+</html>
