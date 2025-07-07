@@ -13,29 +13,34 @@
       --blue-dark: #0056b3;
       --green: #2e8b57;
       --red: #dc3545;
-      --bg-light: linear-gradient(120deg, #c2e9fb, #a1c4fd);
+      --bg-light: linear-gradient(135deg, #c2e9fb, #a1c4fd);
       --bg-dark: #121212;
       --text-light: #2d3a4b;
       --text-dark: #ddd;
       --container-light: white;
       --container-dark: #1e1e1e;
-      --shadow-light: rgba(0, 0, 0, 0.2);
+      --shadow-light: rgba(0, 0, 0, 0.15);
       --shadow-dark: rgba(255, 255, 255, 0.1);
+      --border-radius: 12px;
+      --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: var(--font-main);
       background: var(--bg-light);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      flex-direction: column;
       color: var(--text-light);
-      transition: background 0.4s ease, color 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding: 1rem;
-      box-sizing: border-box;
+      min-height: 100vh;
+      margin: 0;
+      user-select: none;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
     body.dark-mode {
@@ -44,63 +49,94 @@
     }
 
     .container {
-      background: var(--container-light);
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px var(--shadow-light);
-      max-width: 450px;
+      max-width: 650px;
       width: 100%;
+      background: var(--container-light);
+      padding: 2rem 2.5rem 3rem; /* Adjusted overall padding for aesthetics */
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 24px var(--shadow-light);
       transition: background 0.4s ease, box-shadow 0.4s ease;
-      box-sizing: border-box;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      user-select: text;
     }
 
     body.dark-mode .container {
       background: var(--container-dark);
-      box-shadow: 0 8px 20px var(--shadow-dark);
+      box-shadow: 0 8px 24px var(--shadow-dark);
     }
 
     h1 {
       text-align: center;
-      color: inherit;
-      margin-bottom: 1rem;
       font-size: 1.8rem;
+      font-weight: 700;
+      user-select: text;
+      margin-bottom: 0.3rem; /* Keep close to credit link */
+    }
+
+    /* Credit Link Styling */
+    #credit-link {
+      display: block;
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 2rem; /* Increased space below credit link */
+      font-size: 1.1rem;
+      color: var(--blue);
+      text-decoration: none;
+      user-select: none;
+      cursor: pointer;
+      animation: pulse 2.5s infinite;
+      transition: color 0.3s ease;
+    }
+
+    #credit-link:hover,
+    #credit-link:focus {
+      color: var(--blue-dark);
+      text-decoration: underline;
+      outline: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+      }
     }
 
     label {
-      font-weight: bold;
       display: block;
-      margin-top: 1rem;
-      color: inherit;
+      margin-top: 1.5rem; /* Consistent top margin for labels */
+      font-weight: 700;
       font-size: 1.1rem;
     }
 
     .subject-row {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.4rem;
+      gap: 0.7rem;
+      margin-top: 0.5rem;
+      flex-wrap: nowrap;
     }
 
     select, input[type=number] {
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      padding: 0.5rem;
+      flex: 1;
+      padding: 0.75rem 1rem;
       font-size: 1.1rem;
+      border: 1.5px solid #ccc;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      color: #222;
       transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     select {
-      flex: 1 1 60%;
-      background: white;
-      color: black;
-    }
-
-    input[type=number] {
-      flex: 1 1 35%;
-      background: white;
-      color: black;
-      -webkit-appearance: none;
-      -moz-appearance: textfield;
+      appearance: none;
+      background-color: #f9f9f9;
+      cursor: pointer;
     }
 
     body.dark-mode select,
@@ -110,97 +146,149 @@
       border-color: #555;
     }
 
+    input[type=number]::placeholder {
+      color: #999;
+      font-weight: 400;
+    }
+
     button {
+      margin-top: 3rem; /* Slightly more space above calculate button */
       width: 100%;
-      margin-top: 1.5rem;
-      padding: 0.9rem;
+      padding: 1.3rem;
       background-color: var(--blue);
       color: white;
       border: none;
-      border-radius: 8px;
-      font-size: 1.2rem;
+      border-radius: var(--border-radius);
+      font-weight: 700;
+      font-size: 1.25rem;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
       user-select: none;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      touch-action: manipulation;
+      animation: glowPulse 3s infinite alternate ease-in-out;
     }
 
-    button:hover {
+    button:hover,
+    button:focus {
       background-color: var(--blue-dark);
+      box-shadow: 0 0 15px 5px rgba(0, 86, 179, 0.7);
+      outline: none;
+      animation-play-state: paused;
+    }
+
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 8px 0 rgba(0, 123, 255, 0.6);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 20px 6px rgba(0, 123, 255, 0.85);
+        transform: scale(1.05);
+      }
+      100% {
+        box-shadow: 0 0 8px 0 rgba(0, 123, 255, 0.6);
+        transform: scale(1);
+      }
+    }
+
+    #resultContainer {
+      margin-top: 2.5rem; /* Adjusted margin-top for result container */
+      padding: 1.3rem 1.6rem;
+      border-radius: 12px;
+      background-color: rgba(0, 0, 0, 0.05);
+      min-height: 160px; /* Slightly increased min-height to accommodate more internal spacing */
+      box-sizing: border-box;
+      user-select: text;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      /* Using margin-bottom on #result for spacing instead of gap on container */
+    }
+
+    body.dark-mode #resultContainer {
+      background-color: rgba(255, 255, 255, 0.1);
     }
 
     #result {
-      text-align: center;
-      font-size: 1.3rem;
-      margin-top: 1rem;
       color: var(--green);
       transition: color 0.3s ease;
-      min-height: 2.5rem;
+      animation: fadeInUp 1.2s ease forwards;
+      opacity: 0;
+      transform: translateY(15px);
+      letter-spacing: 0.03em;
+      font-size: 1.4rem;
+      font-weight: 700;
+      padding: 0;
+      margin: 0 0 1.8rem 0; /* Increased margin-bottom here for more space between GPA and Marks */
+      user-select: text;
+      min-height: 1.4em;
+      flex-shrink: 0;
     }
 
     body.dark-mode #result {
       color: #7fffd4;
     }
 
-    .footer {
-      margin-top: 1rem;
-      font-size: 1.1rem;
-      color: #444;
-      text-align: center;
-      transition: color 0.3s ease;
+    #totalMarks {
+      color: var(--text-light);
+      font-weight: 700;
+      font-size: 1.15rem;
       user-select: none;
+      font-family: monospace;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: rgba(255 255 255 / 0.15);
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.07);
+      margin: 0; /* Ensure no other margins interfere */
+      user-select: text;
+      min-height: 1.15em;
+      flex-shrink: 0;
     }
 
-    body.dark-mode .footer {
-      color: #aaa;
+    body.dark-mode #totalMarks {
+      background: rgba(255 255 255 / 0.1);
+      color: var(--text-dark);
+      box-shadow: 0 0 8px rgba(255 255 255, 0.12);
     }
 
-    .footer a#author-link {
-      background: linear-gradient(45deg, #6a11cb, #2575fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 900;
-      font-size: 1.3rem;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      text-shadow: 0 0 8px rgba(101, 67, 213, 0.6);
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .footer a#author-link:hover {
-      color: #2575fc;
-      -webkit-text-fill-color: initial;
-      text-decoration: underline;
-      text-shadow: 0 0 12px #2575fc;
-    }
-
-    /* Dark mode toggle switch container */
+    /* Dark mode toggle UI */
     .dark-mode-toggle {
       position: fixed;
       top: 1rem;
-      right: 1.5rem;
+      right: 1rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      font-size: 1rem;
-      color: var(--text-light);
-      user-select: none;
-      z-index: 1000;
-      transition: color 0.4s ease;
-      background: rgba(255 255 255 / 0.7);
-      padding: 0.3rem 0.6rem;
+      gap: 0.6rem;
+      background: rgba(255 255 255 / 0.8);
+      padding: 0.4rem 0.8rem;
       border-radius: 20px;
+      font-weight: 600;
+      font-size: 1rem;
+      user-select: none;
+      cursor: pointer;
+      z-index: 9999;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
     body.dark-mode .dark-mode-toggle {
-      color: var(--text-dark);
       background: rgba(0 0 0 / 0.6);
+      color: var(--text-dark);
     }
 
-    /* Switch style */
     .switch {
       position: relative;
       display: inline-block;
-      width: 45px;
-      height: 24px;
+      width: 50px;
+      height: 28px;
     }
 
     .switch input {
@@ -212,25 +300,22 @@
     .slider {
       position: absolute;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background-color: #ccc;
-      transition: 0.4s;
       border-radius: 34px;
+      transition: 0.4s;
     }
 
     .slider:before {
       position: absolute;
       content: "";
-      height: 18px;
-      width: 18px;
+      height: 22px;
+      width: 22px;
       left: 3px;
       bottom: 3px;
       background-color: white;
-      transition: 0.4s;
       border-radius: 50%;
+      transition: 0.4s;
     }
 
     input:checked + .slider {
@@ -238,217 +323,416 @@
     }
 
     input:checked + .slider:before {
-      transform: translateX(21px);
+      transform: translateX(22px);
     }
 
-    /* Responsive tweaks for smaller screens */
-    @media (max-width: 480px) {
+    /* Responsive & mobile optimizations */
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem 0.6rem;
+      }
+      .container {
+        padding: 1.5rem 1.8rem 2rem;
+      }
       h1 {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
       }
       label {
         font-size: 1rem;
       }
       select, input[type=number] {
         font-size: 1rem;
-        padding: 0.4rem;
+        padding: 0.7rem 0.9rem;
       }
       button {
-        font-size: 1.1rem;
-        padding: 0.8rem;
+        font-size: 1.15rem;
+        padding: 1.1rem;
       }
       .dark-mode-toggle {
         font-size: 0.9rem;
-        padding: 0.25rem 0.5rem;
-        top: 0.5rem;
-        right: 0.8rem;
+        top: 0.7rem;
+        right: 0.7rem;
+        padding: 0.3rem 0.6rem;
       }
+    }
+
+    /* Save as Picture button */
+    #saveImageBtn {
+      margin-top: 1rem;
+      background-color: #28a745;
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+      display: none; /* Initially hidden */
+    }
+
+    #saveImageBtn:hover,
+    #saveImageBtn:focus {
+      background-color: #1e7e34;
+      box-shadow: 0 0 15px 5px rgba(30, 126, 52, 0.7);
+      outline: none;
+      animation-play-state: paused;
     }
   </style>
 </head>
 <body>
-  <div class="dark-mode-toggle" aria-label="Toggle dark mode">
-    <label for="toggle-dark-mode">Dark Mode</label>
+  <div class="dark-mode-toggle" aria-label="Toggle dark mode" tabindex="0">
+    <label for="toggle-dark-mode" style="user-select:none; cursor:pointer;">Dark Mode</label>
     <label class="switch" aria-hidden="true">
       <input type="checkbox" id="toggle-dark-mode" />
       <span class="slider"></span>
     </label>
   </div>
 
-  <div class="container" role="main">
-    <h1>📘 HSC GPA Calculator for Bangladeshi Students</h1>
-    <form id="gpaForm" onsubmit="return false;">
-      <label for="bangla">Bangla:</label>
-      <div class="subject-row">
-        <select id="bangla" aria-describedby="bangla_marks">
-          <option value="">Select Grade</option>
-        </select>
-        <input type="number" id="bangla_marks" min="0" max="100" placeholder="Marks (0-100)" />
-      </div>
+  <main class="container" role="main" aria-labelledby="main-title">
+    <h1 id="main-title">📘 HSC GPA Calculator</h1>
+    <a href="https://linktr.ee/salehsakib" target="_blank" rel="noopener noreferrer" id="credit-link" aria-label="Made by Saleh Sakib Link">
+      Made by <strong>Saleh Sakib</strong>
+    </a>
 
-      <label for="english">English:</label>
-      <div class="subject-row">
-        <select id="english" aria-describedby="english_marks">
-          <option value="">Select Grade</option>
-        </select>
-        <input type="number" id="english_marks" min="0" max="100" placeholder="Marks (0-100)" />
-      </div>
+    <label for="groupSelect">Select Your Group</label>
+    <select id="groupSelect" aria-required="true" autocomplete="off">
+      <option value="science">Science</option>
+      <option value="business">Business Studies</option>
+      <option value="humanities">Humanities</option>
+    </select>
 
-      <label for="ict">ICT:</label>
-      <div class="subject-row">
-        <select id="ict" aria-describedby="ict_marks">
-          <option value="">Select Grade</option>
-        </select>
-        <input type="number" id="ict_marks" min="0" max="100" placeholder="Marks (0-100)" />
-      </div>
+    <form id="subjectsForm" onsubmit="return false;" aria-live="polite" aria-atomic="true"></form>
 
-      <label for="physics">Physics:</label>
-      <div class="subject-row">
-        <select id="physics" aria-describedby="physics_marks">
-          <option value="">Select Grade</option>
-        </select>
-        <input type="number" id="physics_marks" min="0" max="100" placeholder="Marks (0-100)" />
-      </div>
+    <button type="button" id="calculateBtn" aria-label="Calculate GPA">🎓 Calculate GPA</button>
 
-      <label for="chemistry">Chemistry:</label>
-      <div class="subject-row">
-        <select id="chemistry" aria-describedby="chemistry_marks">
-          <option value="">Select Grade</option>
-        </select>
-        <input type="number" id="chemistry_marks" min="0" max="100" placeholder="Marks (0-100)" />
-      </div>
+    <div id="resultContainer" aria-live="polite" aria-atomic="true">
+      <div id="result"></div>
+      <div id="totalMarks"></div>
+    </div>
 
-      <label for="biology">Biology / Math:</label>
-      <div class="subject-row">
-        <select id="biology" aria-describedby="biology_marks">
-          <option value="">Select Grade</option>
-        </select>
-        <input type="number" id="biology_marks" min="0" max="100" placeholder="Marks (0-100)" />
-      </div>
-
-      <label for="optional">Optional Subject (Optional):</label>
-      <div class="subject-row">
-        <select id="optional" aria-describedby="optional_marks">
-          <option value="">Select Grade</option>
-        </select>
-        <input type="number" id="optional_marks" min="0" max="100" placeholder="Marks (0-100)" />
-      </div>
-
-      <button type="button" onclick="calculateGPA()">🎓 Calculate GPA</button>
-    </form>
-    <div id="result" role="alert" aria-live="polite"></div>
-  </div>
-  <div class="footer">
-    Made by <a href="https://linktr.ee/salehsakib" target="_blank" rel="noopener noreferrer" id="author-link">Saleh Sakib</a>
-  </div>
+    <button type="button" id="saveImageBtn" aria-label="Save GPA result as picture">💾 Save as Picture</button>
+  </main>
 
   <script>
-    const subjects = ["bangla", "english", "ict", "physics", "chemistry", "biology", "optional"];
+    const groups = {
+      science: {
+        main: ["Bangla", "English", "ICT", "Physics", "Chemistry", "Biology / Math"],
+        optional: ["Biology", "Agriculture", "Higher Math", "Computer Science", "Engineering Drawing", "Fine Arts"]
+      },
+      business: {
+        main: ["Bangla", "English", "ICT", "Accounting", "Business Organization & Management", "Finance, Banking & Insurance"],
+        optional: ["Marketing", "Cooperative", "Production Management & Entrepreneurship", "Higher Math", "Computer Science", "Fine Arts"]
+      },
+      humanities: {
+        main: ["Bangla", "English", "ICT", "Civics & Good Governance", "History of Bangladesh & World Civilization", "Geography & Environment"],
+        optional: ["Psychology", "Sociology", "Logic", "Higher Math", "Computer Science", "Fine Arts"]
+      }
+    };
+
     const grades = [
+      { label: "Select Grade", value: "" },
       { label: "A+ (5.00)", value: 5 },
       { label: "A (4.00)", value: 4 },
       { label: "A- (3.50)", value: 3.5 },
       { label: "B (3.00)", value: 3 },
       { label: "C (2.00)", value: 2 },
       { label: "D (1.00)", value: 1 },
-      { label: "F (0.00)", value: 0 },
+      { label: "F (0.00)", value: 0 }
     ];
 
+    const groupSelect = document.getElementById("groupSelect");
+    const subjectsForm = document.getElementById("subjectsForm");
+    const resultBox = document.getElementById("result");
+    const totalMarksBox = document.getElementById("totalMarks");
+    const calculateBtn = document.getElementById("calculateBtn");
+    const saveImageBtn = document.getElementById("saveImageBtn");
+
     function marksToGPA(mark) {
-      if (mark >= 80 && mark <= 100) return 5;
-      if (mark >= 70 && mark <= 79) return 4;
-      if (mark >= 60 && mark <= 69) return 3.5;
-      if (mark >= 50 && mark <= 59) return 3;
-      if (mark >= 40 && mark <= 49) return 2;
-      if (mark >= 33 && mark <= 39) return 1;
-      if (mark >= 0 && mark <= 32) return 0;
-      return NaN;
+      if (mark >= 80) return 5;
+      if (mark >= 70) return 4;
+      if (mark >= 60) return 3.5;
+      if (mark >= 50) return 3;
+      if (mark >= 40) return 2;
+      if (mark >= 33) return 1;
+      return 0;
     }
 
-    subjects.forEach(subject => {
-      const select = document.getElementById(subject);
-      grades.forEach(grade => {
-        const option = document.createElement("option");
-        option.value = grade.value;
-        option.textContent = grade.label;
-        select.appendChild(option);
+    function renderSubjects(group) {
+      subjectsForm.innerHTML = "";
+
+      groups[group].main.forEach(subject => {
+        const id = subject.toLowerCase().replace(/[^a-z0-9]/gi, '');
+        const label = document.createElement("label");
+        label.textContent = subject;
+
+        const row = document.createElement("div");
+        row.className = "subject-row";
+
+        const gradeSelect = document.createElement("select");
+        gradeSelect.id = id + "_grade";
+        grades.forEach(g => {
+          const opt = document.createElement("option");
+          opt.value = g.value;
+          opt.textContent = g.label;
+          gradeSelect.appendChild(opt);
+        });
+
+        const markInput = document.createElement("input");
+        markInput.type = "number";
+        markInput.min = 0;
+        markInput.max = subject.toLowerCase().includes("ict") ? 100 : 200;
+        markInput.placeholder = subject.toLowerCase().includes("ict") ? "Marks (0-100)" : "Marks (0-200)";
+        markInput.id = id + "_marks";
+
+        markInput.addEventListener("input", () => {
+          let mark = parseFloat(markInput.value);
+          if (!isNaN(mark)) {
+            let avg = subject.toLowerCase().includes("ict") ? mark : mark / 2;
+            gradeSelect.value = marksToGPA(avg);
+          } else {
+            gradeSelect.value = "";
+          }
+        });
+
+        gradeSelect.addEventListener("change", () => {
+          if (gradeSelect.value !== "") {
+            markInput.value = "";
+          }
+        });
+
+        row.appendChild(gradeSelect);
+        row.appendChild(markInput);
+        subjectsForm.appendChild(label);
+        subjectsForm.appendChild(row);
       });
-    });
 
-    subjects.forEach(subject => {
-      const marksInput = document.getElementById(subject + "_marks");
-      const gradeSelect = document.getElementById(subject);
+      // Optional subject select
+      const optLabel = document.createElement("label");
+      optLabel.textContent = "Optional Subject";
+      subjectsForm.appendChild(optLabel);
 
-      marksInput.addEventListener("input", () => {
-        let mark = parseFloat(marksInput.value);
-        if (isNaN(mark) || mark < 0 || mark > 100) {
-          gradeSelect.value = "";
-          return;
+      const optSelect = document.createElement("select");
+      optSelect.id = "optional_subject";
+
+      const defaultOpt = document.createElement("option");
+      defaultOpt.value = "";
+      defaultOpt.textContent = "Select Optional Subject";
+      optSelect.appendChild(defaultOpt);
+
+      groups[group].optional.forEach(sub => {
+        const opt = document.createElement("option");
+        opt.value = sub;
+        opt.textContent = sub;
+        optSelect.appendChild(opt);
+      });
+
+      subjectsForm.appendChild(optSelect);
+
+      // Optional grade and marks inputs
+      const optRow = document.createElement("div");
+      optRow.className = "subject-row";
+
+      const optGrade = document.createElement("select");
+      optGrade.id = "optional_grade";
+      optGrade.style.display = "none";
+      grades.forEach(g => {
+        const opt = document.createElement("option");
+        opt.value = g.value;
+        opt.textContent = g.label;
+        optGrade.appendChild(opt);
+      });
+
+      const optMarkInput = document.createElement("input");
+      optMarkInput.type = "number";
+      optMarkInput.min = 0;
+      optMarkInput.max = 200;
+      optMarkInput.placeholder = "Marks (0-200)";
+      optMarkInput.id = "optional_marks";
+      optMarkInput.style.display = "none";
+
+      optRow.appendChild(optGrade);
+      optRow.appendChild(optMarkInput);
+      subjectsForm.appendChild(optRow);
+
+      optSelect.addEventListener("change", () => {
+        if (optSelect.value === "") {
+          optGrade.style.display = "none";
+          optMarkInput.style.display = "none";
+          optGrade.value = "";
+          optMarkInput.value = "";
+        } else {
+          optGrade.style.display = "inline-block";
+          optMarkInput.style.display = "inline-block";
         }
-        const gpa = marksToGPA(mark);
-        gradeSelect.value = gpa;
       });
 
-      gradeSelect.addEventListener("change", () => {
-        marksInput.value = "";
+      optMarkInput.addEventListener("input", () => {
+        let mark = parseFloat(optMarkInput.value);
+        if (!isNaN(mark)) {
+          let avg = mark / 2;
+          optGrade.value = marksToGPA(avg);
+        } else {
+          optGrade.value = "";
+        }
       });
-    });
+
+      optGrade.addEventListener("change", () => {
+        if (optGrade.value !== "") {
+          optMarkInput.value = "";
+        }
+      });
+    }
 
     function calculateGPA() {
-      let total = 0;
-      let count = 0;
-      let fail = false;
-      let optional = 0;
+      const group = groupSelect.value;
+      const mainSubjects = groups[group].main;
 
-      for (let id of subjects) {
-        const gradeValue = parseFloat(document.getElementById(id).value);
-        if (isNaN(gradeValue)) continue;
-        if (id !== "optional" && gradeValue === 0) fail = true;
-        if (id === "optional") optional = gradeValue;
-        else {
-          total += gradeValue;
-          count++;
+      let totalPoints = 0;
+      let count = 0;
+      let optionalPoint = 0;
+      let totalMarks = 0;
+      let valid = true;
+
+      for (let subject of mainSubjects) {
+        const id = subject.toLowerCase().replace(/[^a-z0-9]/gi, '');
+        let gradeVal = parseFloat(document.getElementById(id + "_grade").value);
+        let markVal = parseFloat(document.getElementById(id + "_marks").value);
+
+        if (isNaN(gradeVal)) {
+          gradeVal = null;
+        }
+        if (isNaN(markVal)) {
+          markVal = null;
+        }
+
+        // Validation: At least grade or mark must be provided
+        if (gradeVal === null && markVal === null) {
+          alert(`Please enter marks or select grade for ${subject}`);
+          valid = false;
+          break;
+        }
+
+        // Compute GPA point using marks if grade is empty
+        if (gradeVal === null || gradeVal === "") {
+          let avg = subject.toLowerCase().includes("ict") ? markVal : markVal / 2;
+          gradeVal = marksToGPA(avg);
+        }
+
+        totalPoints += gradeVal;
+        count++;
+
+        // Sum total marks normalized (marks for ICT out of 100, others out of 200)
+        if (markVal !== null && !isNaN(markVal)) {
+          totalMarks += markVal;
+        } else {
+          // estimate marks from grade * 40 (approx)
+          totalMarks += gradeVal * 40;
         }
       }
 
-      const resultBox = document.getElementById("result");
-      if (fail) {
-        resultBox.textContent = "❌ GPA: 0.00 (You have failed in one or more subjects 😢)";
-        resultBox.style.color = "var(--red)";
-        return;
+      // Optional subject
+      const optionalSub = document.getElementById("optional_subject").value;
+      if (optionalSub !== "") {
+        let gradeValOpt = parseFloat(document.getElementById("optional_grade").value);
+        let markValOpt = parseFloat(document.getElementById("optional_marks").value);
+
+        if (isNaN(gradeValOpt)) {
+          gradeValOpt = null;
+        }
+        if (isNaN(markValOpt)) {
+          markValOpt = null;
+        }
+
+        if (gradeValOpt === null && markValOpt === null) {
+          alert(`Please enter marks or select grade for Optional Subject`);
+          valid = false;
+        }
+
+        if (!valid) return;
+
+        if (gradeValOpt === null || gradeValOpt === "") {
+          let avgOpt = markValOpt / 2;
+          gradeValOpt = marksToGPA(avgOpt);
+        }
+
+        // Optional subject counts as half credit only if GPA > 2
+        optionalPoint = gradeValOpt > 2 ? (gradeValOpt - 2) / 2 : 0;
       }
 
-      if (optional > 2) total += (optional - 2);
+      if (!valid) return;
 
-      let gpa = total / count;
-      if (gpa > 5.00) gpa = 5.00;
+      const finalGPA = (totalPoints + optionalPoint) / count;
 
-      gpa = gpa.toFixed(2);
+      // Round to 2 decimal places
+      const roundedGPA = Math.min(finalGPA, 5).toFixed(2);
 
-      let comment = "";
-      if (gpa >= 5.00) {
-        comment = "Absolute Legend 👑";
-      } else if (gpa >= 4.50) {
-        comment = "Great Job 💥";
-      } else if (gpa >= 4.00) {
-        comment = "Well Done 🛸";
-      } else if (gpa >= 3.50) {
-        comment = "Keep Going 🚀";
-      } else if (gpa >= 3.00) {
-        comment = "Try Harder 💪";
-      } else {
-        comment = "Don't Worry ✨";
-      }
+      resultBox.textContent = `Your GPA is: ${roundedGPA}`;
+      totalMarksBox.textContent = `Total Marks (approx): ${Math.round(totalMarks)}`;
+      resultBox.style.opacity = 1;
 
-      resultBox.innerHTML = `✅ GPA: ${gpa}<br><em>${comment}</em>`;
-      resultBox.style.color = "var(--green)";
+      // Show Save as Picture button after calculation
+      saveImageBtn.style.display = "block";
     }
 
-    // Dark mode toggle
-    const toggle = document.getElementById('toggle-dark-mode');
-    toggle.addEventListener('change', () => {
-      document.body.classList.toggle('dark-mode', toggle.checked);
+    groupSelect.addEventListener("change", () => {
+      renderSubjects(groupSelect.value);
+      resultBox.textContent = "";
+      totalMarksBox.textContent = "";
+      saveImageBtn.style.display = "none";
     });
+
+    calculateBtn.addEventListener("click", calculateGPA);
+
+    // Dark mode toggle with localStorage
+    const toggleDarkMode = document.getElementById("toggle-dark-mode");
+
+    function applyDarkMode(state) {
+      if (state) {
+        document.body.classList.add("dark-mode");
+        toggleDarkMode.checked = true;
+      } else {
+        document.body.classList.remove("dark-mode");
+        toggleDarkMode.checked = false;
+      }
+      localStorage.setItem("darkMode", state ? "enabled" : "disabled");
+    }
+
+    toggleDarkMode.addEventListener("change", () => {
+      applyDarkMode(toggleDarkMode.checked);
+    });
+
+    window.addEventListener("load", () => {
+      const saved = localStorage.getItem("darkMode");
+      applyDarkMode(saved === "enabled");
+      renderSubjects(groupSelect.value);
+    });
+
+    // Save as Picture using html2canvas
+    async function saveAsPicture() {
+      if (!window.html2canvas) {
+        await new Promise(resolve => {
+          const script = document.createElement("script");
+          script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+          script.onload = resolve;
+          document.body.appendChild(script);
+        });
+      }
+
+      // Hide buttons for clean screenshot
+      calculateBtn.style.visibility = "hidden";
+      saveImageBtn.style.visibility = "hidden";
+
+      // Wait for visibility changes to apply and for layout to settle
+      await new Promise(r => setTimeout(r, 200)); // Keeping a robust timeout
+
+      const container = document.querySelector(".container");
+      const canvas = await html2canvas(container, { backgroundColor: null, scale: 2 });
+
+      // Restore buttons visibility
+      calculateBtn.style.visibility = "visible";
+      saveImageBtn.style.visibility = "visible";
+
+      const link = document.createElement("a");
+      link.download = "hsc_gpa_result.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+
+    saveImageBtn.addEventListener("click", saveAsPicture);
   </script>
 </body>
 </html>
